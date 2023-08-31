@@ -1,0 +1,37 @@
+{
+	"start_timestamp_ms": 0,
+	"entities": {
+		"0": {
+			"mac": "44:44:44:44:44:44",
+			"ip": "4.4.4.4",
+			"port": 1337,
+			"window": 1500
+		},
+		"1": {
+			"mac": "55:55:55:55:55:55",
+			"ip": "5.5.5.5",
+			"port": 1337,
+			"window": 1500
+		}
+	},
+	"messages": [
+		{
+			"delay_ms": 0,
+			"sender": "0",
+			"target": "1",
+			"data": "How are you doing this fine morning?"
+		},
+		{
+			"delay_ms": 0,
+			"sender": "1",
+			"target": "0",
+			"data": "For me it's good and what about you?"
+		},
+		{
+			"delay_ms": 0,
+			"sender": "0",
+			"target": "1",
+			"data": "It's great"
+		}
+	]
+}
