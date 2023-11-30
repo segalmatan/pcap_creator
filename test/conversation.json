@@ -2,31 +2,32 @@
 	"start_time_utc": "2022-04-01 14:15:00",
 	"entities": {
 		"0": {
-			"mac": "44:44:44:44:44:44",
-			"ip": "4.4.4.4",
+			"mac": "34:e1:2d:45:22:f9",
+			"ip": "192.168.68.4",
 			"port": 1337
 		},
 		"1": {
-			"mac": "55:55:55:55:55:55",
-			"ip": "5.5.5.5",
+			"mac": "34:e1:2d:55:81:ee",
+			"ip": "192.168.68.5",
 			"port": 1337
 		}
 	},
 	"messages": [
 		{
-			"delay_ms": 0,
+			"delay_sec": 0,
 			"sender": "0",
 			"target": "1",
 			"data": "How are you doing this fine morning?"
 		},
 		{
-			"delay_ms": 0,
+			"delay_sec": 12,
+			"delay_ms": 10,
 			"sender": "1",
 			"target": "0",
 			"data": "For me it's good and what about you?"
 		},
 		{
-			"delay_ms": 0,
+			"delay_sec": 7,
 			"sender": "0",
 			"target": "1",
 			"data": "It's great"
