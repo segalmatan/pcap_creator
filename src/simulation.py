@@ -18,22 +18,21 @@ class Simulation:
     """
     Simulation of network traffic with timing
     """
-    def __init__(self, start_timestamp, ping_ms, ping_deviation_ms):
-        self._simulation_time = start_timestamp
+    def __init__(self, start_timestamp_ms, ping_ms, ping_deviation_ms):
+        self._simulation_time_ms = start_timestamp_ms
         self._ping_jitter_ms = Jitter(ping_ms, ping_deviation_ms)
         self._bps = Jitter(400, 20) # TODO: Configure
         self._records = []
 
-    def simulate_data(self, data=b"", delay=0):
-
+    def simulate_data(self, data=b"", delay_ms=0):
         self._records.append((
-            self._simulation_time + delay,
+            self._simulation_time_ms + delay_ms,
             data
         ))
 
-        self._simulation_time += delay
-        self._simulation_time += self._ping_jitter_ms.value
-        self._simulation_time += len(data) // self._bps.value
+        self._simulation_time_ms += delay_ms
+        self._simulation_time_ms += self._ping_jitter_ms.value
+        self._simulation_time_ms += len(data) // self._bps.value
 
     def records(self):
         for record in self._records:

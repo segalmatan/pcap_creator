@@ -64,7 +64,8 @@ class Packet:
     def get_ack_response(self, **kwargs):
         return Packet(
             self._dest_port, self._source_port,
-            self._seq_num, self._seq_num + int(self._syn or self._fin) + len(self._data),
+            self._ack_num,
+            self._seq_num + int(self._syn or self._fin) + len(self._data),
             ack=True, **kwargs
         )
 
