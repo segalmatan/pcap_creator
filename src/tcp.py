@@ -1,9 +1,12 @@
 from construct import \
     Const, Struct, BitStruct, \
-    BitsInteger, Flag, Int16ub, Int32ub, \
+    Flag, Int8ub, Int16ub, Int32ub, \
     GreedyBytes
 
 from utils import ones_complement_checksum
+
+
+DEFAULT_WINDOW_SIZE = 1500
 
 
 class Packet:
@@ -12,8 +15,7 @@ class Packet:
         "destination_port" / Int16ub,
         "seq_number" / Int32ub,
         "ack_number" / Int32ub,
-        "DO" / BitsInteger(4),
-        Const(0, BitsInteger(4)),
+        "DO" / Int8ub, # NOTE: Manually adjust to a nibble value (the consecutive nibble is 0) to keep construct usage simple
         "flags" / BitStruct(
             "CWR" / Flag,
             "ECE" / Flag,
@@ -36,7 +38,7 @@ class Packet:
 
     def __init__(
         self,
-        source_port=0, dest_port=0, seq_num=0, ack_num=0, window=0,
+        source_port=0, dest_port=0, seq_num=0, ack_num=0, window=DEFAULT_WINDOW_SIZE,
         cwr=False, ece=False, ack=False, psh=False, rst=False, syn=False, fin=False,
         pseudo_header_data=b"",
         data=b""
@@ -59,14 +61,11 @@ class Packet:
     def set_pseudo_header(self, raw_pseudo_header):
         self._pseudo_header_data = raw_pseudo_header
 
-    def get_ack_response(self, remote_window=0):
-        if 0 == remote_window:
-            remote_window = self._window
-
+    def get_ack_response(self, **kwargs):
         return Packet(
             self._dest_port, self._source_port,
             self._seq_num, self._seq_num + int(self._syn or self._fin) + len(self._data),
-            remote_window, ack=True
+            ack=True, **kwargs
         )
 
     def build(self) -> bytes:
@@ -76,7 +75,7 @@ class Packet:
                 "destination_port": self._dest_port,
                 "seq_number": self._seq_num,
                 "ack_number": self._ack_num,
-                "DO": self._HEADER.sizeof() // 4,
+                "DO": (self._HEADER.sizeof() // 4) << 4, # NOTE: Higher nibble is DO, lower nibble is 0
                 "flags": {
                     "CWR": self._cwr,
                     "ECE": self._ece,

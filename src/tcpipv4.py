@@ -38,7 +38,7 @@ class Packet:
         self._ip_packet._data = self._tcp_packet.build()
 
     def get_ack_packet(self, remote_window=0):
-        tcp_ack_packet = self._tcp_packet.get_ack_response(remote_window)
+        tcp_ack_packet = self._tcp_packet.get_ack_response(window=remote_window)
 
         ip_packet = ipv4.Packet(
             self._ip_packet._dest_address,
